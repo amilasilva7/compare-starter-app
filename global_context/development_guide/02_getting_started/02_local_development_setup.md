@@ -1,88 +1,53 @@
 # Local Development Setup
 
-This guide provides step-by-step instructions to set up your local development environment for the UK PCW application.
+This document outlines the process for setting up and running the UK Price Comparison Website application locally. We leverage **Docker Compose** to ensure a consistent and easy-to-manage local development environment for our microservices architecture.
 
-## 1. Clone the Repository
+---
 
-Open your terminal or command prompt and run:
+### **1. Running the Full Stack with Docker Compose**
 
-```bash
-git clone git@github.com:your-org/your-pcw-project.git
-cd your-pcw-project
-```
+This is the primary method for spinning up all necessary services (database, message broker, backend microservices, BFF, and potentially a containerized frontend build) with a single command.
 
-## 2. Install Backend Dependencies (Python Example)
+*   **Prerequisites:** Ensure Docker Desktop (or equivalent Docker engine) is installed and running on your machine.
+*   **`docker-compose.yml`:** A central `docker-compose.yml` file in the project root will define all services, their dependencies, environment variables, and port mappings.
+*   **Instructions:**
+    1.  Navigate to the project root directory in your terminal.
+    2.  Run `docker-compose up --build` to build images (if necessary) and start all services.
+    3.  For subsequent runs, `docker-compose up` is sufficient.
+*   **Services Started:** This command will launch:
+    *   MongoDB (our primary database)
+    *   Zookeeper (dependency for Kafka)
+    *   Kafka (our asynchronous message broker)
+    *   All individual backend microservices (e.g., `quote-service`, `user-service`)
+    *   The Backend-for-Frontend (BFF)
+    *   (Optional) A containerized build of the React frontend.
+*   **Access:** Services will be accessible via `localhost` on their defined ports (e.g., `http://localhost:3000` for the frontend, `http://localhost:8080` for the BFF).
 
-Navigate to the backend service directory (e.g., `services/backend-api`):
+### **2. Running Individual Services for Faster Iteration (Hot-Reloading)**
 
-```bash
-cd services/backend-api
-python -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
-pip install -r requirements.txt
-```
+For rapid development and hot-reloading, developers will often run the specific service they are actively working on outside of Docker, while other dependencies continue to run via Docker Compose.
 
-## 3. Install Frontend Dependencies (Node.js/npm Example)
+*   **General Steps:**
+    1.  Start the full stack with `docker-compose up` (excluding the specific service you intend to run locally, if it's defined in `docker-compose.yml`).
+    2.  Navigate to the individual service's directory (e.g., `cd services/frontend-web` or `cd services/quote-service`).
+    3.  Run `npm install` to ensure all dependencies are up-to-date.
+    4.  Execute the service's local development command.
 
-Navigate to the frontend application directory (e.g., `apps/frontend-web`):
+*   **Frontend (React App):**
+    *   From the frontend application directory (`services/frontend-web`):
+    *   Run `npm start`.
+    *   This will typically launch the React app with hot-reloading, connecting to the backend services running in Docker.
 
-```bash
-cd apps/frontend-web
-npm install  # Or `yarn install` if using Yarn
-```
+*   **Backend Microservice (Node.js/Express):**
+    *   From the microservice's directory (e.g., `services/quote-service`):
+    *   Run `npm run dev` (assuming a `nodemon` or similar setup for hot-reloading).
+    *   This service will connect to MongoDB and Kafka instances running in Docker.
 
-## 4. Database & External Services Setup (Docker Compose)
+### **3. Local Development Testing**
 
-Many services (e.g., PostgreSQL, Redis, Kafka) are run locally using Docker Compose.
-
-From the project root directory:
-
-```bash
-docker-compose -f docker-compose.local.yml up -d
-```
-
-This will start all required local services in detached mode.
-
-## 5. Environment Variables
-
-Each service will require specific environment variables. Typically, `.env.example` files are provided in each service directory. Copy these to `.env` and fill in the appropriate values.
-
-```bash
-cp services/backend-api/.env.example services/backend-api/.env
-# Edit services/backend-api/.env
-
-cp apps/frontend-web/.env.example apps/frontend-web/.env
-# Edit apps/frontend-web/.env
-```
-
-## 6. Run the Application
-
-### Run Backend Services (Example)
-
-```bash
-cd services/backend-api
-source venv/bin/activate
-python manage.py runserver
-```
-
-### Run Frontend Application (Example)
-
-```bash
-cd apps/frontend-web
-npm start
-```
-
-Refer to the `README.md` within each service/app directory for specific running instructions.
-
-## 7. Initial Database Setup
-
-For relational databases, you might need to run migrations and seed data:
-
-```bash
-cd services/backend-api
-source venv/bin/activate
-python manage.py migrate
-python manage.py loaddata initial_data.json # If applicable
-```
-
-Your local development environment should now be fully operational.
+*   **Unit & Integration Tests:**
+    *   Navigate to the specific service directory.
+    *   Run `npm test` (for Node.js/React services) or `pytest` (for Python services, if any).
+*   **End-to-End (E2E) Tests:**
+    *   While E2E tests are typically run against a deployed staging environment, they can be executed locally against the full Docker Compose setup if needed.
+    *   Configure the E2E test runner (e.g., Cypress) to point to the local `localhost` URLs of the running services.

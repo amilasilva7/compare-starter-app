@@ -7,3 +7,4 @@ This section outlines the principles and best practices for managing data within
 *   [1. Database Interaction](./01_database_interaction.md)
 *   [2. Data Migration Strategy](./02_data_migration_strategy.md)
 *   [3. Data Quality & Governance](./03_data_quality_governance.md)
+*   [4. Master Data Management](./04_master_data_management.md)

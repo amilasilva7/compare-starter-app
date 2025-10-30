@@ -1,51 +1,38 @@
 # Data Migration Strategy
 
-This document outlines the strategy for managing database schema changes and data migrations within the PCW application. A robust migration strategy is essential for evolving the application while maintaining data integrity and minimizing downtime.
+This document outlines the strategy for managing database schema and data changes in our MongoDB instance. While MongoDB is schema-flexible, managing changes to data structures and types, as well as migrating existing data, is crucial for application stability and data integrity.
 
-## 1. Principles
+---
 
-*   **Automated:** All schema changes and data migrations must be automated and version-controlled.
-*   **Idempotent:** Migrations should be executable multiple times without causing unintended side effects.
-*   **Reversible (where possible):** While not always feasible for complex data transformations, strive to make migrations reversible or have a clear rollback plan.
-*   **Atomic:** Each migration should represent a single, logical change.
-*   **Tested:** Migrations must be thoroughly tested in non-production environments.
+### **1. Tooling: `migrate-mongo`**
 
-## 2. Migration Tools
+We will use **`migrate-mongo`** as our primary database migration tool for the Node.js/MongoDB stack.
 
-We will use language/framework-specific migration tools:
-*   **Python (Django/FastAPI):** `Alembic` (for SQLAlchemy) or Django's built-in migration system.
-*   **Go:** `Goose` or `migrate`.
-*   **Node.js (TypeScript):** `TypeORM Migrations` or `Knex.js`.
+*   **Key Features:**
+    *   **Version Control:** Migrations are defined in JavaScript files and stored alongside our application code, allowing for version control and traceability.
+    *   **Up/Down Functions:** Each migration script contains both an `up()` function (to apply the change) and a `down()` function (to revert the change), enabling forward and backward compatibility.
+    *   **Changelog Tracking:** `migrate-mongo` maintains a `_changelog` collection in MongoDB to track which migrations have been applied, preventing redundant execution.
+    *   **Environment Agnostic:** Can be run against any MongoDB instance, making it suitable for development, testing, staging, and production environments.
 
-## 3. Types of Migrations
+### **2. Migration Workflow**
 
-*   **Schema Migrations:** Changes to the database structure (e.g., adding/dropping tables, columns, indexes, altering data types).
-*   **Data Migrations:** Changes to the data itself (e.g., populating new columns, transforming existing data, cleaning up old data).
+1.  **Create a New Migration:** When a database change is required (e.g., adding a new field, renaming a collection, performing a data transformation), a new migration script is generated (`migrate-mongo create <migration-name>`).
+2.  **Define Changes:** The developer implements the necessary database operations within the `up()` and `down()` functions of the migration script using MongoDB's native driver commands or Mongoose operations.
+3.  **Version Control:** The migration script is committed to the relevant microservice's repository.
+4.  **Local Testing:** Developers run migrations locally to ensure they work as expected (`migrate-mongo up` and `migrate-mongo down`).
 
-## 4. Migration Workflow
+### **3. Integration with CI/CD**
 
-1.  **Develop Migration:** Write the migration script using the chosen tool. This script should define both `up` (apply) and `down` (rollback) operations.
-2.  **Test Locally:** Apply the migration in your local development environment and verify its effects. Test both `up` and `down` operations if reversible.
-3.  **Version Control:** Commit the migration script to version control alongside the code changes it supports.
-4.  **CI/CD Integration:** Migrations are typically applied automatically as part of the deployment pipeline to non-production environments (DevInt, QA, Staging).
-5.  **Production Deployment:** For production, migrations are applied carefully, often as a separate step or with specific strategies (see below).
+Migrations are automatically applied as part of our microservices' deployment pipelines.
 
-## 5. Production Migration Strategies
+1.  **Deployment Trigger:** When a microservice (e.g., the Reference Data Service) is deployed to any environment (development, staging, production) via our CI/CD pipeline.
+2.  **Automated Migration Run:** The CI/CD script for that service will execute `migrate-mongo up` (or a similar command). This command checks the `_changelog` and applies any pending migrations to the target database.
+3.  **Rollback (if needed):** In case of deployment issues, the `migrate-mongo down` command can be used to revert the last applied migration(s).
 
-For critical production environments, especially with large datasets, consider these strategies to minimize downtime:
+### **4. Best Practices for Migrations**
 
-*   **Zero-Downtime Migrations:**
-    *   **Additive Changes First:** Always add new columns, tables, or indexes before removing old ones. This allows the old and new versions of the application to run simultaneously.
-    *   **Two-Phase Deployment:**
-        1.  Deploy code that can work with both the old and new schema.
-        2.  Apply the schema migration.
-        3.  Deploy code that only works with the new schema.
-    *   **Feature Flags:** Use feature flags to control the activation of new code paths that depend on schema changes.
-*   **Blue/Green or Canary Deployments:** (See [Deployment Process](../../06_deployment_operations/02_deployment_process.md)) These strategies can help manage the risk of migrations by allowing a gradual rollout or quick rollback.
-
-## 6. Data Seeding
-
-*   **Initial Data:** Use migration scripts or separate seeding scripts to populate initial data (e.g., lookup tables, default configurations) in new environments.
-*   **Test Data:** Never use production data for testing. Generate realistic, anonymized test data for development and QA environments.
-
-By following a disciplined data migration strategy, we can ensure the continuous evolution of our application's data model without compromising data integrity or service availability.
+*   **Small, Atomic Changes:** Each migration should ideally focus on a single, isolated change to minimize complexity and risk.
+*   **Idempotency:** Ensure migrations can be run multiple times without causing issues.
+*   **Non-Blocking Operations:** Prefer non-blocking database operations to avoid service downtime, especially in production.
+*   **Test Thoroughly:** Test migrations in all environments before deploying to production.
+*   **Clear Naming:** Name migration files descriptively (e.g., `202510311200_add_provider_status_field_to_providers_collection.js`).

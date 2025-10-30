@@ -18,3 +18,4 @@ This guide is structured into logical sections, each with its own `README.md` fo
 *   [8. Data Management](./08_data_management/README.md)
 *   [9. UI/UX & Accessibility](./09_ui_ux_accessibility/README.md)
 *   [10. Troubleshooting & Support](./10_troubleshooting_support/README.md)
+*   [11. SEO Strategy](./11_seo_strategy/README.md)

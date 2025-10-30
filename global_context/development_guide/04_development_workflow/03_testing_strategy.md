@@ -36,7 +36,25 @@ We adhere to the testing pyramid principle, emphasizing a higher proportion of f
 *   **What to Test:** Critical user journeys (e.g., user registration, comparing products, submitting an application, purchasing a policy).
 *   **Tools:** `Cypress` (Frontend), `Playwright`.
 
-## 2. Test-Driven Development (TDD)
+## 2. Visual Regression Testing
+
+Visual regression testing ensures that UI changes do not inadvertently alter the appearance of existing components or pages. This is crucial for maintaining a consistent user experience and brand identity.
+
+*   **Focus:** Detecting unintended visual changes at the pixel level.
+*   **What to Test:** Key UI components, critical pages, and responsive layouts.
+*   **Tools:** We will integrate a tool like `Percy` or `Chromatic` (often integrated with Storybook) into our CI/CD pipeline.
+*   **Automation:** Automated to run on every Pull Request or merge, comparing current UI screenshots against approved baselines.
+
+## 3. Automated Accessibility Testing
+
+Automated accessibility testing helps ensure our application is usable by the widest possible audience, including individuals with disabilities, and adheres to standards like WCAG 2.1 Level AA.
+
+*   **Focus:** Identifying common accessibility violations.
+*   **What to Test:** Missing `alt` text, insufficient color contrast, incorrect ARIA attributes, keyboard navigability issues.
+*   **Tools:** We will integrate `Axe-core` (via Cypress or as a standalone CI check) to scan for violations.
+*   **Automation:** Automated to run during the CI phase of our pipeline.
+
+## 4. Test-Driven Development (TDD)
 
 We encourage a Test-Driven Development (TDD) approach where applicable. This approach leads to cleaner code, less debugging, and a comprehensive test suite.
 
@@ -44,12 +62,12 @@ We encourage a Test-Driven Development (TDD) approach where applicable. This app
 2.  **Green:** Write the minimum amount of code to make the test pass.
 3.  **Refactor:** Improve the code while ensuring all tests still pass.
 
-## 3. Test Coverage
+## 5. Test Coverage
 
 *   **Target:** Aim for high test coverage, especially for critical business logic. While 100% coverage is not always practical or necessary, strive for a minimum of **80% line coverage** for new code.
 *   **Tools:** Use coverage tools (`pytest-cov` for Python, `Jest` coverage reports for JavaScript) to monitor and report coverage.
 
-## 4. Mocking & Stubbing
+## 6. Mocking & Stubbing
 
 Mocking and stubbing are essential for isolating components and controlling test environments.
 
@@ -59,7 +77,7 @@ Mocking and stubbing are essential for isolating components and controlling test
 *   **For Integration Tests:** Use mocking/stubbing more judiciously. While internal dependencies (like a test database) should be real, *external services* (e.g., third-party provider APIs) should often be mocked to ensure tests are deterministic, fast, and don't accrue real costs.
     *   **When NOT to Mock (in Integration Tests):** Avoid mocking internal components that are part of the integration you are trying to test, as this defeats the purpose of an integration test.
 
-## 5. Test Data Management
+## 7. Test Data Management
 
 Managing test data effectively is crucial for reliable and reproducible tests.
 
@@ -69,7 +87,7 @@ Managing test data effectively is crucial for reliable and reproducible tests.
 *   **Database Seeding:** Implement scripts or fixtures to seed test databases with a known state before running integration tests.
 *   **Cleanup:** Ensure test data is cleaned up (rolled back or deleted) after test runs to maintain test isolation and prevent pollution.
 
-## 6. Running Tests Locally
+## 8. Running Tests Locally
 
 *   **Run All Tests:**
     *   `python -m pytest` (Python Backend)
@@ -81,7 +99,7 @@ Managing test data effectively is crucial for reliable and reproducible tests.
     *   `npm test -- --watch` (often default for `Jest`)
 *   **Debugging Tests:** Utilize your IDE's debugging features to set breakpoints and step through test execution.
 
-## 7. Test Reporting & CI Integration
+## 9. Test Reporting & CI Integration
 
 *   **Local Reports:** Generate and view test reports locally:
     *   Test results: Standard output of test runner (`pytest`, `Jest`).
@@ -90,12 +108,12 @@ Managing test data effectively is crucial for reliable and reproducible tests.
     *   **Gatekeeping:** Pull Requests will not be merged if tests fail or coverage significantly drops (as defined in [Coding Standards & Linting](../02_coding_standards_linting.md)).
     *   **Reporting:** Test results and coverage reports are automatically published to the CI/CD dashboard for easy viewing and analysis.
 
-## 8. Performance Testing
+## 10. Performance Testing
 
 *   Regularly conduct performance tests (e.g., load testing, stress testing) against staging environments to ensure the application meets NFRs for response times and throughput.
 *   **Tools:** `JMeter`, `Locust`, `k6`.
 
-## 9. Security Testing
+## 11. Security Testing
 
 *   Integrated into CI/CD (SAST, DAST).
 *   Regular penetration testing (external firms).

@@ -26,11 +26,23 @@ This document outlines best practices for frontend development within the PCW ap
 *   **Pure Components/Memoization:** Use `React.memo` or `useMemo`/`useCallback` to prevent unnecessary re-renders of components.
 *   **Folder Structure:** Organize components logically (e.g., by feature, by type).
 
-## 4. State Management
+## 4. State Management Strategy
 
-*   **Local Component State:** For simple UI state within a single component.
-*   **Context API / Zustand / Redux Toolkit:** For global application state that needs to be shared across many components.
-*   **React Query / SWR:** For managing server-side data fetching, caching, and synchronization.
+Our state management strategy is divided into two distinct categories to ensure efficiency and clarity:
+
+### a. Server State
+This is data that originates from our backend APIs and is cached on the client (e.g., product lists, user profiles, quotes).
+
+*   **Primary Tool:** **RTK Query** (part of the Redux Toolkit ecosystem).
+*   **Rationale:** RTK Query automates the fetching, caching, synchronization, and error handling of server state. This eliminates the need for manual data-fetching logic and provides a consistent, efficient way to interact with our BFF.
+
+### b. Client State
+This is UI-specific state that exists only within the browser (e.g., form inputs, modal visibility, theme settings).
+
+*   **Primary Tools:**
+    1.  **React Hooks (`useState`, `useReducer`):** For all state that is local to a single component or its immediate children.
+    2.  **Redux Toolkit (`createSlice`):** For global client state that needs to be accessed by multiple, unrelated components across the application (e.g., notification popups, sorting/filtering criteria).
+*   **Rationale:** We use the simplest effective tool for the job, preventing over-complication. Using the Redux Toolkit ecosystem for both server and global client state provides seamless integration.
 
 ## 5. Error Handling & User Feedback
 

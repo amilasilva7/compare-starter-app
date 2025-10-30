@@ -4,6 +4,7 @@ Security is paramount for our PCW application, especially when handling sensitiv
 
 ## Table of Contents
 
+*   [0. Security Strategy Overview](./00_security_strategy_overview.md)
 *   [1. Secure Coding Principles](./01_secure_coding_principles.md)
 *   [2. Data Handling & Privacy (PII & GDPR)](./02_data_handling_privacy.md)
 *   [3. Authentication & Authorization Implementation](./03_auth_auth_implementation.md)

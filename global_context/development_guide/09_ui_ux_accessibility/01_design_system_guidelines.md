@@ -18,7 +18,34 @@ A Design System is more than just a style guide or a component library. It's a s
 *   **Collaboration:** Fosters better communication between design and development teams.
 *   **Maintainability:** Easier to update and scale the UI.
 
-## 3. How to Use the Design System
+## 3. Brand & Visual Theme (Agoda-Inspired)
+
+Our visual theme is inspired by Agoda.com, aiming for a design that is vibrant, clear, and conversion-focused. The goal is to create a dynamic and value-driven user experience.
+
+### a. Primary Color Palette
+
+*   **Primary (Agoda Blue):** `#007CE8` - The cornerstone of the brand for headers, links, and primary UI elements.
+*   **Accent (Vibrant Yellow):** `#FFC107` - For highlighting prices, deals, and primary calls-to-action.
+*   **Secondary Accent (Action Pink):** `#E84393` - For secondary actions and promotional badges.
+*   **Background (White):** `#FFFFFF` - A clean white background to maximize contrast.
+*   **Text (Dark Gray):** `#4A4A4A` - For all text to ensure high readability.
+*   **Borders (Light Gray):** `#E0E0E0` - For defining containers and inputs.
+
+### b. Typography
+
+*   **Primary Font:** **Roboto** - Used for both headings and body text to maintain a consistent and functional feel, prized for its readability.
+*   **Headings Weight:** Medium (500)
+*   **Body Weight:** Regular (400)
+
+### c. UI Style & Feel
+
+*   **Layout:** A **card-based layout** is central to the design, presenting options in a structured and easily comparable format.
+*   **Information Density:** The design prioritizes showing relevant information clearly and concisely.
+*   **Iconography:** Heavy use of simple, clear icons to supplement text and improve scannability.
+*   **Border Radius:** A sharp, modern border-radius of **4px** on cards and buttons.
+*   **Shadows & Borders:** The UI will rely on clean, 1px borders and subtle shadows to create a well-defined and scannable interface.
+
+## 4. How to Use the Design System
 
 ### a. Component Library
 *   Always use components from the official component library (e.g., Storybook, internal package) when building new features or updating existing ones.

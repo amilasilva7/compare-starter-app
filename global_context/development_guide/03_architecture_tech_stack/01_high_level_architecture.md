@@ -1,75 +1,82 @@
 # High-Level Architecture
 
-Our PCW application is designed as a **cloud-native, microservices-based architecture**. This approach allows for independent development, deployment, and scaling of different parts of the system, enhancing resilience and agility.
+The application is built on a **cloud-native, microservices-based architecture**. This model was chosen for its scalability, resilience, and flexibility, allowing teams to develop, deploy, and manage services independently.
 
-## Core Principles:
+## Architectural Principles
 
-*   **Microservices:** Breaking down the application into small, independent services that communicate via APIs.
-*   **Cloud-Native:** Leveraging cloud provider services (e.g., AWS, GCP, Azure) for infrastructure, managed services, and scalability.
-*   **Event-Driven:** Services communicate asynchronously using events where appropriate, improving responsiveness and decoupling.
-*   **API-First:** All services expose well-defined APIs for internal and external communication.
+*   **Microservices:** The application is decomposed into a suite of small, independent services, each focused on a specific business domain.
+*   **Backend for Frontend (BFF):** Instead of a single generic API gateway, we use a dedicated backend for each frontend experience (e.g., Web App BFF, Mobile App BFF). This allows us to tailor API responses and data aggregation for each specific client.
+*   **Asynchronous Event-Driven Communication:** Services are loosely coupled and communicate asynchronously using a message broker (Apache Kafka) wherever possible. This improves resilience and scalability.
+*   **Synchronous Communication:** For direct request/response interactions (e.g., user login), services communicate synchronously via REST APIs.
 
-## Simplified Diagram (Conceptual):
+## Architectural Diagram
 
-```mermaid
-graph TD
-    A[User Interface: Web/Mobile App] --> B(API Gateway)
-    B --> C(Authentication Service)
-    B --> D(Comparison Service)
-    B --> E(User Profile Service)
-    B --> F(Provider Integration Service)
-    B --> G(Notification Service)
-    B --> H(Rewards Service)
-
-    C --> DB1[User DB]
-    D --> DB2[Product/Quote DB]
-    E --> DB1
-    F --> ExternalAPIs[External Provider APIs]
-    F --> DB2
-    G --> ExternalComms[Email/SMS/Push]
-    H --> DB3[Rewards DB]
-
-    subgraph Backend Services
-        C
-        D
-        E
-        F
-        G
-        H
-    end
-
-    subgraph Data Stores
-        DB1
-        DB2
-        DB3
-    end
-
-    subgraph External Systems
-        ExternalAPIs
-        ExternalComms
-    end
-
-    Backend Services --> MessageBroker(Message Broker: Kafka/RabbitMQ)
-    MessageBroker --> AnalyticsService(Analytics Service)
-    AnalyticsService --> DataWarehouse[Data Warehouse]
-    DataWarehouse --> BI_Tools[BI Tools]
-
-    F --> FraudDetection(Fraud Detection Service)
-    FraudDetection --> AdminPanel(Admin Panel)
-
-    AdminPanel --> Backend Services
+```
+                               +-------------------------+
+                               |   Browser (React App)   |
+                               +-------------------------+
+                                           |
+                                           | (HTTPS)
+                                           v
++-----------------------------------------------------------------------------------+
+|                                   Web App BFF                                     |
+| (Backend for Frontend - Node.js/Express.js)                                       |
+| - Aggregates data from core services for the UI                                   |
+| - Handles authentication                                                          |
++-----------------------------------------------------------------------------------+
+  |        |                  |                   |                  |        |
+  | (REST) |                  | (REST)            | (REST)           | (REST) |
+  v        v                  v                   v                  v        v
++----------+      +-----------+      +------------+      +-----------+      +---------+
+|  Users   |      | Comparison|      |   Quotes   |      | Providers |      | Payments|
+| Service  |      |  Service  |      |  Service   |      |  Service  |      | Service |
++----------+      +-----------+      +------------+      +-----------+      +---------+
+  |   ^                 |   ^                |   ^               |   ^            |   ^
+  |   |                 |   |                |   |               |   |            |   |
+  v   | (Publish)       v   | (Publish)      v   | (Publish)     v   | (Publish)  v   | (Publish)
++-----------------------------------------------------------------------------------+
+|                                                                                   |
+|                               Apache Kafka (Message Broker)                       |
+|                                                                                   |
++-----------------------------------------------------------------------------------+
+      ^
+      | (Subscribe)
+      |
++----------------------+
+| Notifications Service|
+| - Sends emails, SMS  |
++----------------------+
 
 ```
 
-## Key Components:
+## Core Services & Responsibilities
 
-*   **User Interface (Web/Mobile App):** The client-side application that users interact with.
-*   **API Gateway:** A single entry point for all client requests, handling routing, authentication, and rate limiting.
-*   **Microservices:** Independent services responsible for specific business capabilities (e.g., Comparison, User Profile, Provider Integration).
-*   **Data Stores:** Dedicated databases for each service or logical grouping of data.
-*   **Message Broker:** Facilitates asynchronous communication between services and enables event-driven architectures.
-*   **External Provider APIs:** Integrations with third-party insurance, utility, and financial providers.
-*   **Analytics & BI:** Services for collecting, processing, and visualizing application data.
-*   **Admin Panel:** Internal tool for managing the platform, users, and providers.
+1.  **Web App BFF (Backend for Frontend):**
+    *   The single entry point and API provider for the React web application.
+    *   Aggregates data from multiple core services to provide a simple, efficient API for the frontend.
+    *   Offloads complex orchestration from the client.
 
-This architecture promotes resilience, scalability, and allows teams to work independently on different services.
+2.  **Users Service:**
+    *   Manages user registration, authentication, profiles, and personal data.
+    *   Publishes events like `UserRegistered` to Kafka.
+
+3.  **Comparison Service:**
+    *   The core engine for searching, filtering, and comparing product data.
+    *   Consumes updated data from the Providers Service.
+
+4.  **Quotes Service:**
+    *   Generates and stores historical quotes for users.
+    *   Publishes events like `QuoteGenerated` to Kafka.
+
+5.  **Providers Service:**
+    *   Manages all integrations with third-party product providers.
+    *   Periodically fetches and normalizes data from external APIs.
+    *   Publishes `ProviderDataUpdated` events to Kafka.
+
+6.  **Payments Service:**
+    *   Handles all monetization logic, including affiliate tracking and commission calculations.
+    *   Integrates with payment gateways using the Adapter pattern.
+
+7.  **Notifications Service:**
+    *   A fully decoupled service that listens for events on Kafka (e.g., `UserRegistered`, `QuoteGenerated`).
+    *   Responsible for sending all user communications (email, SMS, etc.).

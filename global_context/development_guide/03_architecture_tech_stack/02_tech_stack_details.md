@@ -3,40 +3,42 @@
 This section outlines the core technologies and frameworks used across the PCW application. The choices are driven by considerations for scalability, performance, developer productivity, and maintainability.
 
 ## 1. Frontend
-*   **Framework:** React.js (with Next.js for server-side rendering and static site generation)
-*   **Language:** TypeScript
-*   **Styling:** Tailwind CSS, Styled Components
-*   **State Management:** React Query, Zustand/Redux Toolkit
-*   **Testing:** Jest, React Testing Library, Cypress (E2E)
+*   **Framework:** React.js
+*   **Language:** JavaScript (or TypeScript)
+*   **Styling:** CSS/Sass, or a component library like Material-UI
+*   **State Management:** Redux Toolkit or React Context API
+*   **Testing:** Jest, React Testing Library
 
 ## 2. Backend Services
-*   **Primary Language:** Python (with FastAPI for REST APIs)
-*   **Alternative Language (for specific services):** Go (for high-performance, low-latency services)
-*   **Frameworks:** FastAPI, Django (for Admin Panel/CMS if needed)
-*   **Testing:** Pytest
+*   **Runtime:** Node.js
+*   **Framework:** Express.js
+*   **Language:** JavaScript (or TypeScript)
+*   **Testing:** Jest, Supertest
 
-## 3. Databases
-*   **Relational:** PostgreSQL (for core transactional data, user profiles, product configurations)
-*   **NoSQL:** MongoDB (for flexible data storage, e.g., user preferences, analytics events)
-*   **Caching:** Redis (for session management, rate limiting, frequently accessed data)
+## 3. Database
+*   **Database:** MongoDB
+*   **ODM (Object Data Modeling):** Mongoose
+*   **Caching:** Redis (Optional, for session management or caching)
 
 ## 4. Cloud Infrastructure
-*   **Provider:** AWS (Amazon Web Services) - chosen for its comprehensive suite of services, scalability, and global reach.
+*   **Provider:** A cloud provider like AWS, Google Cloud, or Azure.
 *   **Key Services:**
-    *   **Compute:** AWS Lambda (serverless functions), Amazon ECS/EKS (container orchestration)
-    *   **Networking:** Amazon VPC, AWS Load Balancer, Amazon Route 53
-    *   **Storage:** Amazon S3, Amazon RDS (for PostgreSQL), Amazon DocumentDB (for MongoDB compatible)
-    *   **Messaging:** Amazon SQS, Amazon SNS, Apache Kafka (managed service like Confluent Cloud or self-hosted on EC2)
-    *   **Monitoring & Logging:** Amazon CloudWatch, Prometheus, Grafana, ELK Stack (Elasticsearch, Logstash, Kibana)
-    *   **Security:** AWS IAM, AWS WAF, AWS KMS
+    *   **Compute:** Node.js runtime environment (e.g., AWS EC2, Heroku, Vercel)
+    *   **Database Hosting:** MongoDB Atlas, or self-hosted on a cloud VM.
+    *   **Storage:** Cloud storage for static assets (e.g., AWS S3).
 
-## 5. CI/CD & DevOps
+## 5. Messaging and Event Streaming
+*   **Primary Choice:** Apache Kafka is recommended for handling real-time data feeds, event-driven architecture, and communication between microservices.
+*   **Node.js Library:** `kafkajs` is the preferred modern client. It is free, open-source, and well-supported by the community.
+*   **Alternatives:** For simpler use cases or different needs, `RabbitMQ` or `Redis Pub/Sub` can also be considered.
+
+## 6. CI/CD & DevOps
 *   **Version Control:** Git (GitHub)
 *   **CI/CD Platform:** GitHub Actions / GitLab CI / AWS CodePipeline
 *   **Containerization:** Docker
 *   **Infrastructure as Code (IaC):** Terraform
 
-## 6. Other Tools
+## 7. Other Tools
 *   **API Documentation:** OpenAPI/Swagger UI
 *   **Message Broker:** Apache Kafka (for event streaming)
 *   **Search:** Elasticsearch (for full-text search capabilities)

@@ -1,51 +1,35 @@
-# Monitoring & Logging
+# Monitoring & Logging Strategy
 
-Effective monitoring and logging are crucial for understanding the health, performance, and behavior of the PCW application, enabling proactive issue detection and rapid incident resolution.
+In a distributed microservices architecture, effective monitoring and logging are crucial for understanding system health, diagnosing issues, and ensuring reliability. Our strategy is built on the three pillars of observability: Logs, Metrics, and Traces.
 
-## 1. Monitoring Strategy
+## 1. Centralized Logging
 
-Our monitoring strategy focuses on the 'Four Golden Signals' of monitoring:
-*   **Latency:** The time it takes to serve a request or complete an action.
-*   **Traffic:** How much demand is being placed on your system (e.g., requests per second).
-*   **Errors:** The rate of requests that fail (e.g., HTTP 5xx errors).
-*   **Saturation:** How 'full' your service is (e.g., CPU, memory, disk, network utilization).
+*   **What it is:** The process of collecting logs from all services into a single, searchable location.
+*   **Strategy:**
+    *   All microservices will write logs to `stdout` as a stream of events.
+    *   A log aggregator agent (e.g., Fluentd, Filebeat) running alongside our services will collect these logs.
+    *   Logs are forwarded to a centralized logging platform.
+*   **Recommended Tools:**
+    *   **Platform:** **ELK Stack (Elasticsearch, Logstash, Kibana)** or a managed cloud service like Datadog Logs or AWS CloudWatch Logs.
 
-### a. Key Monitoring Tools
-*   **Prometheus:** For collecting and storing time-series metrics from all services.
-*   **Grafana:** For creating dashboards and visualizing metrics from Prometheus.
-*   **Cloud Provider Monitoring (e.g., AWS CloudWatch):** For infrastructure-level metrics and health checks.
-*   **Application Performance Monitoring (APM) Tool (e.g., New Relic, Datadog):** For deep visibility into application code performance, transaction tracing, and dependency mapping.
+## 2. Metrics & Alerting
 
-### b. Alerting
-*   Set up alerts in Prometheus Alertmanager or CloudWatch based on predefined thresholds for key metrics.
-*   Alerts should be actionable, routed to the appropriate teams (e.g., PagerDuty, Slack channels), and include sufficient context for diagnosis.
-
-## 2. Logging Strategy
-
-We ensure comprehensive and consistent logging across all application components.
-
-### a. Logging Principles
-*   **Structured Logging:** Emit logs in a structured format (e.g., JSON) to facilitate parsing, searching, and analysis.
-*   **Contextual Information:** Include relevant context in logs, such as `request_id`, `user_id` (anonymized), `service_name`, `trace_id`, `environment`, `timestamp`.
-*   **Severity Levels:** Use standard logging levels (DEBUG, INFO, WARNING, ERROR, CRITICAL) appropriately.
-*   **Avoid PII in Logs:** Never log Personally Identifiable Information (PII) unless absolutely necessary for auditing/compliance and with strict security controls.
-*   **Centralized Logging:** Aggregate logs from all services into a central logging system.
-
-### b. Key Logging Tools
-*   **ELK Stack:** Elasticsearch (for storage and indexing), Logstash (for parsing and transforming), Kibana (for visualization and searching).
-*   **Cloud Provider Logging (e.g., AWS CloudWatch Logs):** For collecting and storing logs, especially from serverless functions or managed services.
+*   **What it is:** The collection of time-series data representing the quantitative health and performance of the system (e.g., CPU usage, request rates, error counts).
+*   **Strategy:**
+    *   Each microservice will expose a `/metrics` endpoint with key performance indicators.
+    *   A central tool will periodically scrape these endpoints to collect the metrics.
+    *   Dashboards will be built to visualize system health, and alerts will be configured to automatically notify the team of any anomalies (e.g., error rate exceeds 5%).
+*   **Recommended Tools:**
+    *   **Metrics Collection:** **Prometheus**
+    *   **Visualization & Alerting:** **Grafana**
 
 ## 3. Distributed Tracing
 
-For microservices architectures, distributed tracing is essential to understand the flow of requests across multiple services and identify performance bottlenecks.
-
-*   **Tools:** Jaeger, OpenTelemetry, AWS X-Ray.
-*   **Implementation:** Ensure all services propagate trace context (e.g., `trace_id`, `span_id`) through requests.
-
-## 4. Error Tracking
-
-Integrate error tracking tools to automatically capture and report application errors, enabling quick diagnosis and resolution.
-
-*   **Tools:** Sentry, Rollbar.
-
-Effective monitoring and logging are indispensable for maintaining a highly available, performant, and secure PCW application.
+*   **What it is:** A method for tracking the entire lifecycle of a request as it travels through multiple microservices. This is essential for debugging bottlenecks and errors in a distributed system.
+*   **Strategy:**
+    *   When a request first enters the system (at the BFF), it is assigned a unique **Trace ID**.
+    *   This Trace ID is passed in the headers of every subsequent internal request to other services.
+    *   By correlating logs and events using this Trace ID, we can reconstruct the entire journey of a single request.
+*   **Recommended Tools:**
+    *   **Instrumentation:** **OpenTelemetry** (a vendor-neutral standard for generating trace data).
+    *   **Backend/Visualization:** **Jaeger** or a managed cloud service like Datadog APM or AWS X-Ray.

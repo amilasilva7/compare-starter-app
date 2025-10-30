@@ -1,62 +1,52 @@
 # Non-Functional Requirements (NFRs)
 
-This document outlines the critical Non-Functional Requirements (NFRs) that define the quality attributes and operational characteristics of the PCW application. These are quantifiable targets that guide architectural decisions, development, testing, and operations.
+This document defines the quantifiable quality attributes and operational characteristics that the UK Price Comparison Website application must meet. These NFRs guide architectural decisions, development practices, and testing efforts to ensure the application is performant, scalable, reliable, secure, and maintainable.
 
-## 1. Performance
+---
 
-*   **Page Load Times:**
-    *   Homepage & Key Landing Pages: < 2 seconds (90th percentile).
-    *   Comparison Results Page: < 3 seconds (90th percentile) from form submission to results display.
-*   **API Response Times:**
-    *   Critical API Endpoints (e.g., getting quotes): < 500 ms (90th percentile).
-    *   Non-critical API Endpoints: < 1 second (90th percentile).
-*   **Throughput:**
-    *   Support 500 requests per second (RPS) for core comparison flows.
-    *   Support peak traffic bursts of 1500 RPS for short durations.
+### **1. Performance**
 
-## 2. Scalability
+*   **Frontend Page Load Time:**
+    *   **Largest Contentful Paint (LCP):** < 2.5 seconds for 75% of users.
+    *   **First Input Delay (FID):** < 100 milliseconds for 75% of users.
+    *   **Cumulative Layout Shift (CLS):** < 0.1 for 75% of users.
+    *   **Overall Page Load:** < 3 seconds for 90% of users on a typical broadband connection (e.g., 50 Mbps).
+*   **API Response Time (Backend):**
+    *   **Critical APIs (e.g., Quote Generation, User Authentication):** < 200 milliseconds for 95% of requests.
+    *   **Non-Critical APIs (e.g., User Profile Update, Reference Data Lookup):** < 500 milliseconds for 95% of requests.
+*   **Throughput:** The system must be able to sustain 500 concurrent active users and process 2,000 requests per second during peak load.
 
-*   **User Concurrency:** The system must seamlessly support 100,000 concurrent active users.
-*   **Growth:** The architecture must be capable of scaling horizontally to accommodate a 50% year-over-year growth in user traffic and data volume for the next 3 years.
-*   **Product Expansion:** The architecture must allow for easy integration of new product categories and providers without requiring major refactoring.
+### **2. Scalability**
 
-## 3. Reliability & Availability
+*   **Horizontal Scaling:** All microservices and the frontend must be designed to be horizontally scalable (stateless where possible).
+*   **Load Handling:** The system must be able to automatically scale resources (via Kubernetes autoscaling) to handle a 5x increase in typical traffic within 30 minutes, without degradation of performance NFRs.
+*   **Resource Utilization:** Average CPU utilization for any service should not exceed 70% under normal peak load.
 
-*   **Uptime SLA (Production):** 99.95% annual uptime for core comparison and purchase flows.
-*   **Mean Time To Recover (MTTR):** Target recovery time of < 60 minutes for critical incidents.
-*   **Recovery Point Objective (RPO):** Data loss tolerance of < 15 minutes for critical data.
-*   **Fault Tolerance:** The application should be resilient to single-component failures within a cloud region (e.g., availability zone failures).
+### **3. Reliability & Availability**
 
-## 4. Security
+*   **Uptime:**
+    *   **Critical Services (e.g., Quote Generation, User Authentication, Payment Processing):** 99.9% monthly uptime.
+    *   **Non-Critical Services (e.g., Blog, Static Content):** 99.5% monthly uptime.
+*   **Data Durability (RPO - Recovery Point Objective):** Maximum acceptable data loss of 5 minutes in the event of a major system failure.
+*   **Recovery Time (RTO - Recovery Time Objective):** The system must be fully recoverable and operational within 30 minutes following a major outage.
+*   **Fault Tolerance:** The failure of any single microservice instance should not lead to a complete system outage.
 
-*   **Vulnerability Remediation:** Critical vulnerabilities (CVSS 7.0+) identified via scans or penetration tests must be remediated within 7 days. High vulnerabilities within 30 days.
-*   **Data Breach Notification:** Adhere to GDPR's 72-hour data breach notification requirement where applicable.
-*   **Encryption:** All PII and sensitive financial data must be encrypted at rest and in transit using industry-standard, FIPS 140-2 compliant encryption.
-*   **Authentication Strength:** All user-facing authentication must support strong passwords and MFA; internal/admin authentication must enforce MFA.
+### **4. Security**
 
-## 5. Maintainability
+*   **Vulnerability Management:** All critical vulnerabilities (CVSS score > 7.0) identified through scans or audits must be patched or mitigated within 7 days of discovery. High vulnerabilities (CVSS 4.0-6.9) within 30 days.
+*   **Data Encryption:** All sensitive data (e.g., Personally Identifiable Information - PII, financial details) must be encrypted at rest and in transit (TLS 1.2+).
+*   **Authentication:** Multi-factor authentication (MFA) must be enforced for all administrative access and highly recommended for user accounts.
+*   **Authorization:** Role-Based Access Control (RBAC) must be implemented to ensure users only access resources they are authorized for.
+*   **Compliance:** Adherence to UK GDPR and FCA data security guidelines (as detailed in `05_regulatory_compliance.md`).
 
-*   **Defect Density:** Target less than 0.5 critical/high severity defects per 1000 lines of new or changed code.
-*   **Test Coverage:** Minimum 80% code coverage for unit tests on new business logic.
-*   **Onboarding Time:** A new developer should be able to set up their local environment and make a first contribution within 1 day.
+### **5. Maintainability & Operability**
 
-## 6. Usability & Accessibility
+*   **Code Coverage:** Minimum 80% unit test coverage for all new code.
+*   **Deployment Frequency:** Ability to deploy to production multiple times per day with minimal risk.
+*   **Monitoring & Alerting:** All critical services must have comprehensive logging, metrics, and distributed tracing enabled, with automated alerts for predefined thresholds (e.g., error rates, latency spikes).
+*   **Documentation:** All APIs, services, and significant architectural decisions must be documented.
 
-*   **User Completion Rate:** Target 90% completion rate for key comparison forms.
-*   **WCAG Compliance:** Achieve WCAG 2.1 Level AA conformance for all user-facing interfaces.
-*   **Mobile Responsiveness:** Full functionality and optimal viewing experience across major mobile devices and screen sizes.
+### **6. Usability & Accessibility**
 
-## 7. Deployability & Manageability
-
-*   **Deployment Frequency:** Capable of deploying to production multiple times per day without user impact.
-*   **Deployment Time:** A zero-downtime deployment to production should take less than 15 minutes.
-*   **Rollback Time:** Ability to rollback a production deployment to a previous stable state within 5 minutes.
-*   **Configuration Management:** Environment-specific configurations managed via IaC or secrets manager, with no hardcoded values.
-
-## 8. Compliance
-
-*   **GDPR:** Full adherence to all GDPR principles and requirements.
-*   **FCA:** Full adherence to all relevant Financial Conduct Authority regulations and guidelines (e.g., Consumer Duty).
-*   **Auditability:** All critical actions (e.g., data access, configuration changes, payments) must be logged for auditing purposes for at least 7 years.
-
-These NFRs will be continually reviewed and refined as the project progresses.
+*   **Accessibility:** WCAG 2.1 Level AA compliance for all user-facing interfaces.
+*   **Browser Support:** Full functionality and consistent experience across the latest two major versions of Chrome, Firefox, Edge, and Safari.
