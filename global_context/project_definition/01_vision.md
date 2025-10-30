@@ -1,0 +1,3 @@
+## Project Vision
+
+To build a leading UK Price Comparison Website that combines the robust, data-driven platform capabilities and comprehensive financial tools inspired by MoneySuperMarket, with the transparency, detailed policy information, and user-centric design principles of GoCompare. The goal is to provide UK consumers with an unparalleled experience for comparing and managing a wide range of financial products and services, fostering trust and delivering significant value.
