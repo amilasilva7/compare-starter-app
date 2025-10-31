@@ -2,6 +2,10 @@
 
 This `GEMINI.md` file serves as the primary entry point for understanding the project's context and definition. The comprehensive project details have been organized into a structured folder system for improved maintainability and clarity.
 
+**Rule:** Whenever 'context' is mentioned, it refers to all files within the `global_context` directory, encompassing both the `project_definition` and `development_guide` sections.
+
+**Rule:** All actions and modifications must strictly comply with the entire project context as defined by all files within the `global_context` directory.
+
 ## How the Context is Organized
 
 All detailed project documentation is now located within the `global_context/` directory. This directory contains two main sections:
@@ -33,11 +37,105 @@ All detailed project documentation is now located within the `global_context/` d
     *   **UI/UX & Accessibility:** **Agoda-inspired design system, accessibility standards, frontend best practices (state management with RTK Query), and interactive content strategy.**
     *   **Troubleshooting & Support:** Common issues and how to get help.
     *   **SEO Strategy:** **Comprehensive playbook for web and AI engines, covering keywords, technical SEO, and content optimization.**
-
-## Accessing Detailed Information
-
-*   **Project Definition Document:**
-    [Go to Project Definition Document (Main README)](./global_context/project_definition/README.md)
-
-*   **Development Guide:**
-    [Go to Development Guide (Main README)](./global_context/development_guide/README.md)
+    
+    ### Detailed Context File Structure
+    
+    To provide a comprehensive overview, here is the hierarchical structure of all context files within the `global_context` directory:
+    
+    **global_context/development_guide/**
+    *   `README.md`
+    *   `01_project_overview/01_key_business_concepts.md`
+    *   `01_project_overview/README.md`
+    *   `02_getting_started/01_prerequisites.md`
+    *   `02_getting_started/02_local_development_setup.md`
+    *   `02_getting_started/03_your_first_contribution.md`
+    *   `02_getting_started/README.md`
+    *   `03_architecture_tech_stack/01_high_level_architecture.md`
+    *   `03_architecture_tech_stack/02_tech_stack_details.md`
+    *   `03_architecture_tech_stack/03_data_flow_overview.md`
+    *   `03_architecture_tech_stack/README.md`
+    *   `04_development_workflow/01_git_workflow.md`
+    *   `04_development_workflow/02_coding_standards_linting.md`
+    *   `04_development_workflow/03_testing_strategy.md`
+    *   `04_development_workflow/04_code_review_process.md`
+    *   `04_development_workflow/05_documentation_guidelines.md`
+    *   `04_development_workflow/README.md`
+    *   `05_security_best_practices/00_security_strategy_overview.md`
+    *   `05_security_best_practices/01_secure_coding_principles.md`
+    *   `05_security_best_practices/02_data_handling_privacy.md`
+    *   `05_security_best_practices/03_auth_auth_implementation.md`
+    *   `05_security_best_practices/04_ai_security_considerations.md`
+    *   `05_security_best_practices/README.md`
+    *   `06_deployment_operations/01_ci_cd_pipeline.md`
+    *   `06_deployment_operations/02_deployment_process.md`
+    *   `06_deployment_operations/03_monitoring_logging.md`
+    *   `06_deployment_operations/04_incident_response_role.md`
+    *   `06_deployment_operations/05_performance_scalability.md`
+    *   `06_deployment_operations/README.md`
+    *   `07_api_design_integration/01_api_design_principles.md`
+    *   `07_api_design_integration/02_provider_integration_guide.md`
+    *   `07_api_design_integration/README.md`
+    *   `08_data_management/01_database_interaction.md`
+    *   `08_data_management/02_data_migration_strategy.md`
+    *   `08_data_management/03_data_quality_governance.md`
+    *   `08_data_management/04_master_data_management.md`
+    *   `08_data_management/05_database_schema_design.md`
+    *   `08_data_management/README.md`
+    *   `09_ui_ux_accessibility/01_design_system_guidelines.md`
+    *   `09_ui_ux_accessibility/02_accessibility_standards.md`
+    *   `09_ui_ux_accessibility/03_frontend_best_practices.md`
+    *   `09_ui_ux_accessibility/04_content_strategy.md`
+    *   `09_ui_ux_accessibility/README.md`
+    *   `10_troubleshooting_support/01_common_issues_faq.md`
+    *   `10_troubleshooting_support/02_getting_help_escalation.md`
+    *   `10_troubleshooting_support/README.md`
+    *   `11_seo_strategy/01_seo_playbook.md`
+    *   `11_seo_strategy/README.md`
+    
+    **global_context/project_definition/**
+    *   `01_vision.md`
+    *   `04_target_audience.md`
+    *   `05_regulatory_compliance.md`
+    *   `08_non_functional_requirements.md`
+    *   `README.md`
+    *   `02_key_features/01_core_comparison_car_insurance.md`
+    *   `02_key_features/01_core_comparison.md`
+    *   `02_key_features/02_data_personalization_frs.md`
+    *   `02_key_features/02_data_personalization.md`
+    *   `02_key_features/03_transparency_info_frs.md`
+    *   `02_key_features/03_transparency_info.md`
+    *   `02_key_features/04_rewards_loyalty_frs.md`
+    *   `02_key_features/04_rewards_loyalty.md`
+    *   `02_key_features/05_platform_tech.md`
+    *   `02_key_features/06_monetization_partner_frs.md`
+    *   `02_key_features/06_monetization_partner.md`
+    *   `02_key_features/README.md`
+    *   `03_user_types/01_customer.md`
+    *   `03_user_types/02_provider_partner.md`
+    *   `03_user_types/03_admin_internal_staff.md`
+    *   `03_user_types/04_affiliate_partner.md`
+    *   `03_user_types/05_data_analyst.md`
+    *   `03_user_types/README.md`
+    *   `06_security_access_considerations/01_authentication.md`
+    *   `06_security_access_considerations/02_authorization.md`
+    *   `06_security_access_considerations/03_data_protection.md`
+    *   `06_security_access_considerations/04_session_management.md`
+    *   `06_security_access_considerations/05_api_security.md`
+    *   `06_security_access_considerations/06_internal_infra_security.md`
+    *   `06_security_access_considerations/07_user_education.md`
+    *   `06_security_access_considerations/README.md`
+    *   `07_advanced_considerations/01_personalization_ai.md`
+    *   `07_advanced_considerations/02_provider_integration.md`
+    *   `07_advanced_considerations/03_data_governance.md`
+    *   `07_advanced_considerations/04_operational_excellence.md`
+    *   `07_advanced_considerations/05_legal_ethical_nuances.md`
+    *   `07_advanced_considerations/06_innovation_future_proofing.md`
+    *   `07_advanced_considerations/README.md`
+    
+    ## Accessing Detailed Information
+    
+    *   **Project Definition Document:**
+        [Go to Project Definition Document (Main README)](./global_context/project_definition/README.md)
+    
+    *   **Development Guide:**
+        [Go to Development Guide (Main README)](./global_context/development_guide/README.md)
