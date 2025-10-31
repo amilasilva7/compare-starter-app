@@ -1,0 +1,15 @@
+[submodule "frontend"]
+	path = frontend
+	url = /Users/amila/Desktop/AI_APPS/compare-starter-app/frontend
+[submodule "services/bff"]
+	path = services/bff
+	url = /Users/amila/Desktop/AI_APPS/compare-starter-app/services/bff
+[submodule "services/providers-service"]
+	path = services/providers-service
+	url = /Users/amila/Desktop/AI_APPS/compare-starter-app/services/providers-service
+[submodule "services/quote-service"]
+	path = services/quote-service
+	url = /Users/amila/Desktop/AI_APPS/compare-starter-app/services/quote-service
+[submodule "services/reference-data-service"]
+	path = services/reference-data-service
+	url = /Users/amila/Desktop/AI_APPS/compare-starter-app/services/reference-data-service

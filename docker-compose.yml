@@ -1,0 +1,112 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - app-network
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - app-network
+
+  kafka:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:29092,PLAINTEXT_HOST://0.0.0.0:9092
+    networks:
+      - app-network
+
+  reference-data-service:
+    build: ./services/reference-data-service # Placeholder for actual service path
+    container_name: reference-data-service
+    ports:
+      - "3001:3001" # Example port
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/reference_data
+      KAFKA_BROKER: kafka:29092
+    depends_on:
+      - mongodb
+      - kafka
+    networks:
+      - app-network
+
+  providers-service:
+    build: ./services/providers-service # Placeholder for actual service path
+    container_name: providers-service
+    ports:
+      - "3002:3002" # Example port
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/providers
+      KAFKA_BROKER: kafka:29092
+    depends_on:
+      - mongodb
+      - kafka
+    networks:
+      - app-network
+
+  quote-service:
+    build: ./services/quote-service # Placeholder for actual service path
+    container_name: quote-service
+    ports:
+      - "3003:3003" # Example port
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/quotes
+      KAFKA_BROKER: kafka:29092
+    depends_on:
+      - mongodb
+      - kafka
+      - providers-service
+      - reference-data-service
+    networks:
+      - app-network
+
+  bff:
+    build: ./services/bff # Placeholder for actual service path
+    container_name: bff
+    ports:
+      - "3004:3000" # Example port for BFF
+    environment:
+      QUOTE_SERVICE_URL: http://quote-service:3003
+      # Add other service URLs as needed
+    depends_on:
+      - quote-service
+    networks:
+      - app-network
+
+  frontend:
+    build: ./frontend # Placeholder for actual frontend path
+    container_name: frontend
+    ports:
+      - "80:3000" # Map host port 80 to container port 3000 for React dev server
+    depends_on:
+      - bff
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  app-network:
+    driver: bridge

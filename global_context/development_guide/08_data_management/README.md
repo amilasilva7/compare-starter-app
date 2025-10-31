@@ -8,3 +8,4 @@ This section outlines the principles and best practices for managing data within
 *   [2. Data Migration Strategy](./02_data_migration_strategy.md)
 *   [3. Data Quality & Governance](./03_data_quality_governance.md)
 *   [4. Master Data Management](./04_master_data_management.md)
+*   [5. Database Schema Design](./05_database_schema_design.md)
