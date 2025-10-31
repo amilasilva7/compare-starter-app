@@ -1,72 +1,76 @@
 # Design System Guidelines
 
-Our Design System is a collection of reusable components, guided by clear standards, that can be assembled to build any number of applications. It ensures visual consistency, improves development efficiency, and enhances the overall user experience.
+Our Design System is a collection of reusable components and clear standards that guide the creation of a **premium, sophisticated, and seamless user experience**. It is the single source of truth for ensuring our application meets the high expectations of our target audience.
 
-## 1. What is a Design System?
+## 1. Design Philosophy: The Premium Experience
 
-A Design System is more than just a style guide or a component library. It's a single source of truth for all design and development decisions, encompassing:
-*   **Design Principles:** Core values that guide our design decisions.
-*   **Brand Guidelines:** Logo usage, typography, color palettes.
-*   **Component Library:** Reusable UI components (buttons, forms, navigation, cards).
-*   **Patterns:** Solutions for common UI problems (e.g., form validation, data display).
-*   **Documentation:** Guidelines on how to use components, when to use them, and their accessibility considerations.
+Our design philosophy is centered on three core principles to deliver an experience that feels like a premium concierge service:
 
-## 2. Key Benefits
-*   **Consistency:** Ensures a unified look and feel across the entire application.
-*   **Efficiency:** Speeds up development by providing ready-to-use, tested components.
-*   **Quality:** Components are thoroughly tested for functionality, accessibility, and responsiveness.
-*   **Collaboration:** Fosters better communication between design and development teams.
-*   **Maintainability:** Easier to update and scale the UI.
+*   **Effortless Efficiency:** The user's time is paramount. The interface must be intuitive, fast, and proactive. We achieve this through intelligent defaults, proactive personalization, and by presenting information in the clearest, most scannable way possible.
+*   **Understated Elegance:** A premium aesthetic is clean, confident, and uncluttered. We prioritize generous white space, high-quality typography, and a calm, focused layout. Every element on the screen must serve a purpose and contribute to a sense of refined quality.
+*   **Assured Trust & Discretion:** We build trust through professionalism and transparency. The design must feel secure, private, and respectful. This is achieved through a polished look, flawless copy, and discreet cues about data security, rather than loud, overt trust badges.
 
-## 3. Brand & Visual Theme (Agoda-Inspired)
+## 2. Brand & Visual Theme (Refined Agoda-Inspired)
 
-Our visual theme is inspired by Agoda.com, aiming for a design that is vibrant, clear, and conversion-focused. The goal is to create a dynamic and value-driven user experience.
+Our visual theme is inspired by Agoda.com but refined for a more sophisticated, high-end audience. The goal is a design that is clear, value-driven, and feels premium.
 
-### a. Primary Color Palette
+### a. Refined Color Palette
 
-*   **Primary (Agoda Blue):** `#007CE8` - The cornerstone of the brand for headers, links, and primary UI elements.
-*   **Accent (Vibrant Yellow):** `#FFC107` - For highlighting prices, deals, and primary calls-to-action.
-*   **Secondary Accent (Action Pink):** `#E84393` - For secondary actions and promotional badges.
-*   **Background (White):** `#FFFFFF` - A clean white background to maximize contrast.
-*   **Text (Dark Gray):** `#4A4A4A` - For all text to ensure high readability.
-*   **Borders (Light Gray):** `#E0E0E0` - For defining containers and inputs.
+The palette is clean and high-contrast, using color strategically to guide the user while ensuring optimal readability and accessibility. All color combinations for text and interactive elements must meet **WCAG 2.1 Level AA contrast requirements** (minimum 4.5:1 for normal text, 3:1 for large text and graphical objects).
 
-### b. Typography
+*   **Primary (Agoda Blue):** `#007CE8` - The cornerstone of the brand, used for key headers and primary interactive elements.
+*   **Spotlight Accent (Vibrant Yellow):** `#FFC107` - Used **sparingly** to highlight the most critical actions (e.g., a final "Buy Now" button) or key savings, making its appearance more impactful.
+*   **Canvas:** The majority of the interface will be a calm palette of **White (`#FFFFFF`)**, **Light Gray (`#E0E0E0` for borders)**, and **Dark Gray (`#4A4A4A` for text)**. This creates a clean, sophisticated canvas and maximizes readability.
 
-*   **Primary Font:** **Roboto** - Used for both headings and body text to maintain a consistent and functional feel, prized for its readability.
-*   **Headings Weight:** Medium (500)
-*   **Body Weight:** Regular (400)
+#### Semantic Color Palette for UI Components
+
+To ensure consistency, beauty, and ease on the eye, we use a semantic approach to color application across UI components and states:
+
+*   **Primary Action:** Buttons and links for primary actions will use **Primary Blue (`#007CE8`)** with **White (`#FFFFFF`)** text.
+*   **Secondary Action:** Secondary buttons will use **Dark Gray (`#4A4A4A`)** borders with **Dark Gray (`#4A4A4A`)** text on a **White (`#FFFFFF`)** background.
+*   **Success:** For positive feedback or successful operations, we use a subtle **Green (`#4CAF50`)** with **White (`#FFFFFF`)** text.
+*   **Warning:** For cautionary messages, a soft **Orange (`#FF9800`)** with **Dark Gray (`#4A4A4A`)** text.
+*   **Error:** For critical errors or negative feedback, a clear **Red (`#F44336`)** with **White (`#FFFFFF`)** text.
+*   **Information:** For general informational messages, a light **Blue (`#2196F3`)** with **White (`#FFFFFF`)** text.
+*   **Text:** All body text will be **Dark Gray (`#4A4A4A`)** on a **White (`#FFFFFF`)** or very light background to ensure high contrast and readability.
+*   **Borders & Dividers:** Subtle **Light Gray (`#E0E0E0`)** for defining containers and separating content, providing visual structure without distraction.
+*   **Hover/Active States:** Interactive elements will have subtle, accessible hover and active states, typically a slight darkening or lightening of the background color, or a change in border/text color, ensuring contrast is maintained.
+
+### b. Elevated Typography
+
+Typography is a key element of our premium feel.
+
+*   **Font Pairing:** We use a sophisticated font pairing to create a clear and elegant visual hierarchy.
+    *   **Headings:** **Lora** (a clean, modern serif) or **Lato** (a sophisticated sans-serif).
+    *   **Body Text:** **Roboto** - for its excellent readability in UI contexts.
+*   **Weights:** Headings will use a Medium (500) weight, while body text will be Regular (400).
 
 ### c. UI Style & Feel
 
-*   **Layout:** A **card-based layout** is central to the design, presenting options in a structured and easily comparable format.
-*   **Information Density:** The design prioritizes showing relevant information clearly and concisely.
-*   **Iconography:** Heavy use of simple, clear icons to supplement text and improve scannability.
-*   **Border Radius:** A sharp, modern border-radius of **4px** on cards and buttons.
-*   **Shadows & Borders:** The UI will rely on clean, 1px borders and subtle shadows to create a well-defined and scannable interface.
+*   **Layout:** A **card-based layout** remains central, but with generous spacing and clean lines to avoid a cluttered feel.
+*   **White Space:** We will use ample white space to give content room to breathe, creating a sense of calm and focus.
+*   **Data Visualization:** Complex data will be presented in clean, elegant charts and visualizations, not just tables, to make comparisons instantly clear.
+*   **Iconography:** We will use a **custom-designed set of icons** that are elegant, precise, and unique to our brand.
+*   **Imagery:** All imagery must be high-quality, professional photography or custom illustrations. No generic stock photos.
+
+## 3. Micro-interactions & Delightful Details
+
+Subtle animations and thoughtful details are crucial for a premium experience.
+
+*   **Feedback:** Interactive elements will have subtle, graceful hover and click effects. This makes the interface feel responsive and alive.
+*   **Loading States:** We will use **skeleton screens** (faint outlines of the content being loaded) instead of generic spinners. This manages user expectations and makes the application feel faster.
+*   **Transitions:** Page and state transitions will be smooth, fast, and subtle (e.g., a quick fade or slide), creating a seamless flow.
 
 ## 4. How to Use the Design System
 
-### a. Component Library
-*   Always use components from the official component library (e.g., Storybook, internal package) when building new features or updating existing ones.
-*   Avoid creating custom components if an existing one serves the purpose.
-*   Familiarize yourself with the available components, their props, and usage guidelines.
-
-### b. Styling
-*   Adhere to the defined color palette, typography, spacing, and iconography as specified in the design system.
-*   Use utility classes or styled components as per the frontend framework's best practices, but always within the design system's constraints.
-
-### c. Design Tokens
-*   Utilize design tokens (e.g., for colors, fonts, spacing) to ensure consistency and easy theming.
-
-## 4. Contributing to the Design System
-
-*   If you identify a need for a new component or an improvement to an existing one, follow the contribution guidelines (to be detailed in a separate document).
-*   All new components must be thoroughly tested, documented, and reviewed by both design and development leads.
+*   **Component-First:** Always use components from the official library.
+*   **Adherence to Philosophy:** Every new design or feature must be evaluated against our core design philosophy.
+*   **Contribution:** New components or patterns must be reviewed by design and development leads to ensure they meet our high standards for quality, accessibility, and elegance.
 
 ## 5. Tools
-*   **Storybook:** For showcasing and documenting UI components in isolation.
-*   **Figma/Sketch:** Design files for the design system.
-*   **Version Control:** The design system's code and documentation are version-controlled like any other part of the application.
 
-By consistently applying the Design System, we ensure a cohesive, high-quality, and efficient user interface for our PCW application.
+*   **Storybook:** For showcasing and documenting UI components.
+*   **Figma/Sketch:** For the master design files.
+*   **Version Control:** The design system is version-controlled.
+
+By consistently applying these refined guidelines, we will create a cohesive, high-quality, and truly premium user interface.
